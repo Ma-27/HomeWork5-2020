@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mamh.homework52020.MainPageActivity;
 import com.mamh.homework52020.R;
+import com.mamh.homework52020.SignInActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,10 +37,16 @@ public class LoginActivity extends AppCompatActivity {
                 .get(LoginViewModel.class);
 
         //读取用户名和密码的editText
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
+        final EditText usernameEditText = findViewById(R.id.et_username);
+        final EditText passwordEditText = findViewById(R.id.et_password);
+        //提示注册账号的activity
+        final TextView signInTextView = findViewById(R.id.tv_sign_in);
         //确定登录的Button
-        final Button loginButton = findViewById(R.id.login);
+        final Button loginButton = findViewById(R.id.btn_login);
+        //新浪微博登录
+        final ImageButton sinaWeiboLogin = findViewById(R.id.imgbtn_account_sina);
+        //腾讯微博登录
+        final ImageButton tencentWeiboLogin = findViewById(R.id.imgbtn_account_tencent);
         //进度条
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         //获取登录格式的状态，检查是否有错
@@ -113,15 +121,25 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //loginButton处理点击响应
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "成功登录", Toast.LENGTH_SHORT).show();
-                startMainPageActivity();
-            }
+        //logInButton处理点击响应
+        loginButton.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), "成功登录", Toast.LENGTH_SHORT).show();
+            startMainPageActivity();
+            finish();
         });
+
+        //signIn处理点击响应
+        signInTextView.setOnClickListener(v -> {
+            Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(signInIntent);
+        });
+
+        //新浪微博登录点击响应
+        sinaWeiboLogin.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "新浪微博登录", Toast.LENGTH_SHORT).show());
+
+        //腾讯微博登录
+        tencentWeiboLogin.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "腾讯微博登录", Toast.LENGTH_SHORT).show());
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
